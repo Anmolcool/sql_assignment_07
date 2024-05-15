@@ -1,0 +1,114 @@
+-- A-1: DEPARTMENT WISE TEAM SIZE AND AVERAGE SALARY OF ALL EMPLOYEES.  
+
+use assignment;
+select *from emp_sal;
+select *from emp;
+select dept, count(dept) as team_size, round(avg(salary),0) as avg_sal
+from emp_sal
+group by dept; 
+
+
+
+-- A-2 : COUNT OF MANAGERS IN THE COMPANY.
+
+select count(desi) as no_manager from emp_sal
+where desi = 'manager'; 
+
+-- A-3: MAXIMUM & MINIMUM SALARY OF AN ASSOCIATE.
+
+select min(salary) as min_sal, max(salary) as max_sal from emp_sal
+where desi = 'associate';  
+
+-- A-4: DEPARTMENT WISE TEAM SIZE AND AVERAGE SALARY OF DELHI EMPLOYEES.
+
+select Es.dept, count(Es.dept) as team_size, round(avg(Es.salary),0) as avg_sal 
+from emp E 
+inner join emp_sal Es 
+on E.EID = Es.EID
+where E.city = 'delhi'
+group by Es.dept;
+
+
+-- A-5: GENERATE OFFICIAL EMAIL OF THE EMPLOYEE TAKING 1ST CHARATCER OF FIRST  NAME ,
+--      1ST CHARATCER OF LAST NAME , LAST 3 DIGITS OF EID, FOLLowED BY Learnbay.co’.  
+--      EMAIL SHOULD BE IN A UPPER CASE.
+
+select 
+concat(
+upper(SUBSTRING(name, 1, 1)),
+upper(substring(name, INSTR (name, ' ') + 1, 1)),
+right(name, 3),
+'@Learnbay.co') 
+as official_email
+from emp;
+
+-- A-6: NAME,CITY , PHNO & EMAIL OF THE EMPLOYEES WHOSE AGE >=40.
+
+select *from emp;
+
+select name, floor(
+datediff(current_date(), str_to_date(dob, '%d-%m-%Y'))/365.25) 
+as age
+from emp;
+
+-- A-7 EID, NAME DOJ OF EMPLOYEES WHO HAVE COMPLETED 5 YEARS IN THE COMPANY
+
+select EID, name, doj, 
+floor(
+		datediff( current_date(), str_to_date(doj, '%d-%m-%Y'))/365.25
+        ) as yr
+from emp
+where floor(
+		datediff( current_date(), str_to_date(doj, '%d-%m-%Y'))/365.25
+        ) >= 5
+order by yr;
+
+
+-- A-8: DETAILS OF THE MANAGERS HAVING BIRTHDAY IN THE CURRENT MONTH
+SELECT * 
+FROM emp E inner join emp_sal Es on E.EID = Es.EID
+WHERE MONTH(STR_TO_DATE(E.dob, '%d-%m-%Y')) = MONTH(CURRENT_DATE())
+and desi = 'manager';
+
+
+select *from emp;
+select E.name, Es.desi from
+emp E inner join emp_sal Es on E.EID = Es.EID
+where month(E.dob) = month(current_date()) and Es.desi = 'manager'; 
+
+SELECT E.name, Es.desi 
+FROM emp E 
+INNER JOIN emp_sal Es ON E.EID = Es.EID 
+WHERE month(E.dob) = month(CURRENT_DATE());
+
+select * from emp;
+where month(dob) = month(current_date());
+
+SELECT *
+FROM emp
+WHERE MONTH(STR_TO_DATE(dob, '%d-%m-%Y')) = MONTH(CURRENT_DATE());
+
+-- A-9: EID, DEPT , DESI , SALARY OF THE EMPLOYEE WHO IS GETTING THE MAXIMUM  SALARY
+
+select *from emp_sal;
+select EID, DEPT, DESI, SALARY 
+from emp_sal
+where salary = (select max(salary) as max_sal from emp_sal);
+
+
+-- A-10: EID, NAME OF EMPLOYEE WHO HAS LONGEST NAME
+
+select EID, NAME, length(name) as len_name from emp
+where (select max(length(name))) = length(name)
+order by len_name desc;
+
+select EID, name from emp
+where length(name) = (select max(length(name)) from emp);
+
+
+SELECT EID, NAME 
+FROM emp 
+WHERE LENGTH(NAME) = (SELECT MAX(LENGTH(NAME)) FROM emp);
+
+
+use assigment;
