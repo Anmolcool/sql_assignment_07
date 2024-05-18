@@ -37,7 +37,7 @@ select
 concat(
 upper(SUBSTRING(name, 1, 1)),
 upper(substring(name, INSTR (name, ' ') + 1, 1)),
-right(name, 3),
+right(EID, 3),
 '@Learnbay.co') 
 as official_email
 from emp;
